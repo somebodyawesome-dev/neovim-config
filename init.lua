@@ -47,9 +47,12 @@ require('packer').startup(function(use)
   use 'tpope/vim-fugitive'
   use 'tpope/vim-rhubarb'
   use 'lewis6991/gitsigns.nvim'
-
-  use 'navarasu/onedark.nvim' -- Theme inspired by Atom
-  use 'nvim-lualine/lualine.nvim' -- Fancier statusline
+  use 'rebelot/kanagawa.nvim'
+  --use 'navarasu/onedark.nvim' -- Theme inspired by Atom
+  use {
+    'nvim-lualine/lualine.nvim',
+    requires =  'nvim-tree/nvim-web-devicons'
+  } -- Fancier statusline
   use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
   use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
   use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
@@ -60,6 +63,23 @@ require('packer').startup(function(use)
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
 
+  --download packages for formating
+  use { 'prettier/vim-prettier',  run ='npm install --frozen-lockfile --production'}
+  --Auto pair 
+  use 'jiangmiao/auto-pairs'
+  -- transparent background
+  use 'xiyaowong/nvim-transparent'
+  use {
+    "folke/trouble.nvim",
+    requires = "kyazdani42/nvim-web-devicons",
+    config = function()
+    require("trouble").setup {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+    end
+  }
   -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
   local has_plugins, plugins = pcall(require, 'custom.plugins')
   if has_plugins then
@@ -120,7 +140,7 @@ vim.wo.signcolumn = 'yes'
 
 -- Set colorscheme
 vim.o.termguicolors = true
-vim.cmd [[colorscheme onedark]]
+vim.cmd [[colorscheme kanagawa]]
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
@@ -155,8 +175,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- See `:help lualine.txt`
 require('lualine').setup {
   options = {
-    icons_enabled = false,
-    theme = 'onedark',
+    icons_enabled = true,
+    theme = 'auto',
     component_separators = '|',
     section_separators = '',
   },
@@ -183,6 +203,37 @@ require('gitsigns').setup {
     changedelete = { text = '~' },
   },
 }
+--netrw config 
+vim.g.netrw_keepdir = 0
+vim.g.netrw_winsize = 50
+vim.g.netrw_localcopydircmd = 'cp -r'
+--autopair
+vim.g.AutoPairsMapCR = 0
+local map = vim.api.nvim_set_keymap
+map('n','<Leader>dd',':Lexplore',{noremap=true,silent=false})
+--formating settings
+vim.g['prettier#autoformat'] = 1
+vim.g['prettier#autoformat_require_pragma'] = 0
+vim.g.transparent_enabled = true
+
+vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>",
+  {silent = true, noremap = true}
+)
+vim.keymap.set("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>",
+  {silent = true, noremap = true}
+)
+vim.keymap.set("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>",
+  {silent = true, noremap = true}
+)
+vim.keymap.set("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>",
+  {silent = true, noremap = true}
+)
+vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>",
+  {silent = true, noremap = true}
+)
+vim.keymap.set("n", "gR", "<cmd>TroubleToggle lsp_references<cr>",
+  {silent = true, noremap = true}
+)
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
@@ -221,7 +272,7 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help' },
+  ensure_installed = 'all',--{ 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help' },
 
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
@@ -338,11 +389,18 @@ end
 --  the `settings` field of the server config. You must look up that documentation yourself.
 local servers = {
   -- clangd = {},
-  -- gopls = {},
-  -- pyright = {},
+  gopls = {},
+  pyright = {},
+  prismals={},
+  marksman={},
+  ltex={},
+  jsonls={},
+  html={},
+  dockerls={},
+  cssls={},
   -- rust_analyzer = {},
-  -- tsserver = {},
-
+  tsserver = {},
+  tailwindcss={},
   sumneko_lua = {
     Lua = {
       workspace = { checkThirdParty = false },
