@@ -53,7 +53,7 @@ require('packer').startup(function(use)
     'nvim-lualine/lualine.nvim',
     requires =  'nvim-tree/nvim-web-devicons'
   } -- Fancier statusline
-  use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
+  use{ "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} }-- Add indentation guides even on blank lines
   use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
   use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
 
@@ -389,7 +389,6 @@ end
 --  the `settings` field of the server config. You must look up that documentation yourself.
 local servers = {
   -- clangd = {},
-  gopls = {},
   pyright = {},
   prismals={},
   marksman={},
@@ -401,7 +400,7 @@ local servers = {
   -- rust_analyzer = {},
   tsserver = {},
   tailwindcss={},
-  sumneko_lua = {
+  lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
       telemetry = { enable = false },
