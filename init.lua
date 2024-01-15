@@ -51,9 +51,9 @@ require('packer').startup(function(use)
   --use 'navarasu/onedark.nvim' -- Theme inspired by Atom
   use {
     'nvim-lualine/lualine.nvim',
-    requires =  'nvim-tree/nvim-web-devicons'
   } -- Fancier statusline
-  use{ "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} }-- Add indentation guides even on blank lines
+  use {'kyazdani42/nvim-web-devicons'}
+  use "lukas-reineke/indent-blankline.nvim"-- Add indentation guides even on blank lines
   use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
   use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
 
@@ -187,11 +187,14 @@ require('Comment').setup()
 
 -- Enable `lukas-reineke/indent-blankline.nvim`
 -- See `:help indent_blankline.txt`
-require('indent_blankline').setup {
+require('ibl').setup()
+
+--[[
+{
   char = '┊',
   show_trailing_blankline_indent = false,
 }
-
+--]]
 -- Gitsigns
 -- See `:help gitsigns.txt`
 require('gitsigns').setup {
