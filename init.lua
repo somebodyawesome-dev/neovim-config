@@ -25,6 +25,10 @@ require('packer').startup(function(use)
       'folke/neodev.nvim',
     },
   }
+  -- Debugging
+  use 'mfussenegger/nvim-dap'
+  use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } }
+  use 'leoluz/nvim-dap-go'
 
   use { -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -37,9 +41,9 @@ require('packer').startup(function(use)
       pcall(require('nvim-treesitter.install').update { with_sync = true })
     end,
   }
-   -- bufferline packages
-  use {'akinsho/bufferline.nvim', tag = "*", requires = 'nvim-tree/nvim-web-devicons'}
-    
+  -- bufferline packages
+  use { 'akinsho/bufferline.nvim', tag = "*", requires = 'nvim-tree/nvim-web-devicons' }
+
   use { -- Additional text objects via treesitter
     'nvim-treesitter/nvim-treesitter-textobjects',
     after = 'nvim-treesitter',
@@ -54,17 +58,17 @@ require('packer').startup(function(use)
     "kdheepak/lazygit.nvim",
     -- optional for floating window border decoration
     requires = {
-        "nvim-lua/plenary.nvim",
+      "nvim-lua/plenary.nvim",
     },
   })
   --use 'navarasu/onedark.nvim' -- Theme inspired by Atom
   use {
     'nvim-lualine/lualine.nvim',
-  } -- Fancier statusline
-  use {'kyazdani42/nvim-web-devicons'}
-  use "lukas-reineke/indent-blankline.nvim"-- Add indentation guides even on blank lines
-  use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
-  use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
+  }                                         -- Fancier statusline
+  use { 'kyazdani42/nvim-web-devicons' }
+  use "lukas-reineke/indent-blankline.nvim" -- Add indentation guides even on blank lines
+  use 'numToStr/Comment.nvim'               -- "gc" to comment visual regions/lines
+  use 'tpope/vim-sleuth'                    -- Detect tabstop and shiftwidth automatically
 
   -- Fuzzy Finder (files, lsp, etc)
   use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
@@ -73,8 +77,8 @@ require('packer').startup(function(use)
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
   use 'airblade/vim-rooter' -- auto set directory when file is opened
   --download packages for formating
-  use { 'prettier/vim-prettier',  run ='npm install --frozen-lockfile --production'}
-  --Auto pair 
+  use { 'prettier/vim-prettier', run = 'npm install --frozen-lockfile --production' }
+  --Auto pair
   use 'jiangmiao/auto-pairs'
   -- transparent background
   use 'xiyaowong/nvim-transparent'
@@ -82,11 +86,11 @@ require('packer').startup(function(use)
     "folke/trouble.nvim",
     requires = "kyazdani42/nvim-web-devicons",
     config = function()
-    require("trouble").setup {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
-    }
+      require("trouble").setup {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      }
     end
   }
   -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
@@ -161,7 +165,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGai
   pattern = { "*" },
 })
 
---make ligne number relative 
+--make ligne number relative
 vim.opt.number = true
 vim.opt.relativenumber = true
 
@@ -226,36 +230,36 @@ require('gitsigns').setup {
     changedelete = { text = '~' },
   },
 }
---netrw config 
+--netrw config
 vim.g.netrw_keepdir = 0
 vim.g.netrw_winsize = 50
 vim.g.netrw_localcopydircmd = 'cp -r'
 --autopair
 vim.g.AutoPairsMapCR = 0
 local map = vim.api.nvim_set_keymap
-map('n','<Leader>dd',':Lexplore',{noremap=true,silent=false})
+map('n', '<Leader>dd', ':Lexplore', { noremap = true, silent = false })
 --formating settings
 vim.g['prettier#autoformat'] = 1
 vim.g['prettier#autoformat_require_pragma'] = 0
 vim.g.transparent_enabled = true
 
 vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>",
-  {silent = true, noremap = true}
+  { silent = true, noremap = true }
 )
 vim.keymap.set("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>",
-  {silent = true, noremap = true}
+  { silent = true, noremap = true }
 )
 vim.keymap.set("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>",
-  {silent = true, noremap = true}
+  { silent = true, noremap = true }
 )
 vim.keymap.set("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>",
-  {silent = true, noremap = true}
+  { silent = true, noremap = true }
 )
 vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>",
-  {silent = true, noremap = true}
+  { silent = true, noremap = true }
 )
 vim.keymap.set("n", "gR", "<cmd>TroubleToggle lsp_references<cr>",
-  {silent = true, noremap = true}
+  { silent = true, noremap = true }
 )
 
 -- [[ Configure Telescope ]]
@@ -295,7 +299,7 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = 'all',--{ 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help' },
+  ensure_installed = 'all', --{ 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help' },
 
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
@@ -413,16 +417,16 @@ end
 local servers = {
   -- clangd = {},
   pyright = {},
-  prismals={},
-  marksman={},
-  ltex={},
-  jsonls={},
-  html={},
-  dockerls={},
-  cssls={},
+  prismals = {},
+  marksman = {},
+  ltex = {},
+  jsonls = {},
+  html = {},
+  dockerls = {},
+  cssls = {},
   -- rust_analyzer = {},
   tsserver = {},
-  tailwindcss={},
+  tailwindcss = {},
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -432,7 +436,9 @@ local servers = {
 }
 
 -- Setup neovim lua configuration
-require('neodev').setup()
+require('neodev').setup({
+  library = { plugins = { "nvim-dap-ui" }, types = true },
+})
 --
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -460,6 +466,68 @@ mason_lspconfig.setup_handlers {
 
 -- Turn on lsp status information
 require('fidget').setup()
+
+
+-- dap-go setup
+vim.keymap.set("n", "<F5>", ":lua require'dap'.continue()<CR>")
+vim.keymap.set("n", "<F10>", ":lua require'dap'.step_over()<CR>")
+vim.keymap.set("n", "<F11>", ":lua require'dap'.step_into()<CR>")
+vim.keymap.set("n", "<F12>", ":lua require'dap'.step_out()<CR>")
+vim.keymap.set("n", "<leader>b", ":lua require'dap'.toggle_breakpoint()<CR>")
+vim.keymap.set("n", "<leader>B", ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>")
+vim.keymap.set("n", "<leader>lp", ":lua require'dap'.set_breakpoint(nil,nil, vim.fn.input('Log point message: '))<CR>")
+vim.keymap.set("n", "<leader>dr", ":lua require'dap'.repl.open()<CR>")
+require('dap-go').setup {
+  -- Additional dap configurations can be added.
+  -- dap_configurations accepts a list of tables where each entry
+  -- represents a dap configuration. For more details do:
+  -- :help dap-configuration
+  dap_configurations = {
+    {
+      -- Must be "go" or it will be ignored by the plugin
+      type = "go",
+      name = "Attach remote",
+      mode = "remote",
+      request = "attach",
+    },
+  },
+  -- delve configurations
+  delve = {
+    -- the path to the executable dlv which will be used for debugging.
+    -- by default, this is the "dlv" executable on your PATH.
+    path = "dlv",
+    -- time to wait for delve to initialize the debug session.
+    -- default to 20 seconds
+    initialize_timeout_sec = 20,
+    -- a string that defines the port to start delve debugger.
+    -- default to string "${port}" which instructs nvim-dap
+    -- to start the process in a random available port
+    port = "${port}",
+    -- additional args to pass to dlv
+    args = {},
+    -- the build flags that are passed to delve.
+    -- defaults to empty string, but can be used to provide flags
+    -- such as "-tags=unit" to make sure the test suite is
+    -- compiled during debugging, for example.
+    -- passing build flags using args is ineffective, as those are
+    -- ignored by delve in dap mode.
+    -- avaliable ui interactive function to prompt for arguments get_arguments
+    build_flags = {},
+    -- whether the dlv process to be created detached or not. there is
+    -- an issue on Windows where this needs to be set to false
+    -- otherwise the dlv server creation will fail.
+    -- avaliable ui interactive function to prompt for build flags: get_build_flags
+    detached = vim.fn.has("win32") == 0,
+    -- the current working directory to run dlv from, if other than
+    -- the current working directory.
+    cwd = nil,
+  },
+  -- options related to running closest test
+  tests = {
+    -- enables verbosity when running the test.
+    verbose = false,
+  },
+}
 
 -- nvim-cmp setup
 local cmp = require 'cmp'
