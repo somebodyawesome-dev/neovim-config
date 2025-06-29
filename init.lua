@@ -1,7 +1,7 @@
 require 'modules.pkgs'
+require 'modules.lsp'
 require 'modules.remap'
 require 'modules.config'
-require 'modules.lsp'
 require 'modules.debug'
 
 -- The line beneath this is called `modeline`. See `:help modeline`

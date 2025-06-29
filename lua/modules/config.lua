@@ -67,7 +67,7 @@ pcall(require('telescope').load_extension, 'fzf')
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
   ensure_installed = 'all', --{ 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help' },
-
+  ignore_install = { "ipkg" },
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
   incremental_selection = {
