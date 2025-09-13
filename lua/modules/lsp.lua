@@ -81,6 +81,7 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 -- Setup mason so it can manage external tooling
 
 -- Ensure the servers above are installed
+require('mason').setup()
 local mason_lspconfig = require 'mason-lspconfig'
 
 
@@ -91,9 +92,8 @@ vim.lsp.config("*", {
     -- handlers = handlers,
 })
 
-require('mason').setup()
 mason_lspconfig.setup {
-    automatic_enable = false,     -- HACK: rely on lspconfig[server_name].setup to enable the LSPs. For some reason, pyright doesn't get enabled this way
+    automatic_enable = true,     -- HACK: rely on lspconfig[server_name].setup to enable the LSPs. For some reason, pyright doesn't get enabled this way
     ensure_installed = vim.tbl_keys(servers),
 }
 
@@ -107,3 +107,47 @@ for server_name, settings in pairs(servers) do
 end
 -- Turn on lsp status information
 require('fidget').setup()
+
+
+-- nvim-cmp setup
+local cmp = require 'cmp'
+local luasnip = require 'luasnip'
+
+cmp.setup {
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
+  mapping = cmp.mapping.preset.insert {
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+  },
+}
