@@ -475,13 +475,16 @@ mason_lspconfig.setup {
     ensure_installed = vim.tbl_keys(servers),
 }
 
+local lspconfig = require("lspconfig")
+
 for server_name, settings in pairs(servers) do
-    require('lspconfig')[server_name].setup {
+    vim.lsp.config(server_name, {
         capabilities = capabilities,
         on_attach = on_attach,
         settings = settings
         --   handlers = handlers,
-    }
+    })
+    vim.lsp.enable(server_name)
 end
 -- Turn on lsp status information
 require('fidget').setup()
