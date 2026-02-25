@@ -61,7 +61,8 @@ local servers = {
     dockerls = {},
     cssls = {},
     -- rust_analyzer = {},
-    ts_ls = {},
+    -- ts_ls = {},
+    vtsls={},
     tailwindcss = {},
     gopls={},
     lua_ls = {
@@ -82,14 +83,11 @@ require('mason').setup()
 
 -- Ensure the servers above are installed
 local mason_lspconfig = require 'mason-lspconfig'
-
-
 vim.lsp.config("*", {
     capabilities = capabilities,
     on_attach = on_attach,
     -- handlers = handlers,
 })
-
 require('mason').setup()
 mason_lspconfig.setup {
     automatic_enable = false,     -- HACK: rely on lspconfig[server_name].setup to enable the LSPs. For some reason, pyright doesn't get enabled this way
